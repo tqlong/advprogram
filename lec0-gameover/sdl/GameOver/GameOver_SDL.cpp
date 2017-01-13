@@ -25,7 +25,17 @@ int main( int argc, char* args[] )
 		else
 		{
 			screenSurface = SDL_GetWindowSurface( window ); //Get window surface
-			SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) ); //Fill the surface white
+			
+			SDL_Surface* gGameOver = SDL_LoadBMP( "gameover.bmp" );			
+			if( gGameOver == NULL )
+			{
+				cout << "Unable to load image gameover.bmp SDL Error: " << SDL_GetError() << endl;
+			}
+			else
+			{
+				SDL_BlitSurface( gGameOver, NULL, screenSurface, NULL );
+			}
+
 			SDL_UpdateWindowSurface( window ); //Update the surface
 			SDL_Delay( 2000 ); //Wait two seconds
 		}
