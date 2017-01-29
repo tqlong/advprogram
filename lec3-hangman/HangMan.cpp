@@ -4,6 +4,8 @@
 
 using namespace std;
 
+void test_chooseWord();
+
 int generateRandomNumber(int min, int max)
 {
     return rand() % (max-min) + min;
@@ -46,10 +48,19 @@ string chooseWord()
     return wordList[generateRandomNumber(0, NUMBER_OF_WORDS)];
 }
 
-void test_chooseWord();
+string getDrawing(int incorrectGuess)
+{
+    string figure[] = {
+        "fig1", "fig2", "fig3", "fig4", "fig5", "fig6", "fig7", "fig8"
+    };
+    const int NUMBER_OF_FIGURES = sizeof(figure) / sizeof(string);
+    return figure[incorrectGuess % NUMBER_OF_FIGURES];
+}
 
 int main()
 {
+    for (int incorrectGuess = 0; incorrectGuess < 8; incorrectGuess++)
+        cout << getDrawing(incorrectGuess) << endl;
     return 0;
 }
 
