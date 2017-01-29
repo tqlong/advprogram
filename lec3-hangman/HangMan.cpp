@@ -46,9 +46,14 @@ string chooseWord()
     return wordList[generateRandomNumber(0, NUMBER_OF_WORDS)];
 }
 
+void test_chooseWord();
+
 int main()
 {
-    cout << "chooseWord() returns: " << chooseWord() << endl;
-
     return 0;
+}
+
+void test_chooseWord()
+{
+    cout << "chooseWord() returns: " << chooseWord() << endl;
 }
