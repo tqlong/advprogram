@@ -5,6 +5,7 @@
 using namespace std;
 
 void test_chooseWord();
+void test_getDrawing();
 
 int generateRandomNumber(int min, int max)
 {
@@ -115,12 +116,16 @@ string getDrawing(int incorrectGuess)
 
 int main()
 {
-    for (int incorrectGuess = 0; incorrectGuess < 8; incorrectGuess++)
-        cout << getDrawing(incorrectGuess) << endl;
     return 0;
 }
 
 void test_chooseWord()
 {
     cout << "chooseWord() returns: " << chooseWord() << endl;
+}
+
+void test_getDrawing()
+{
+    for (int incorrectGuess = 0; incorrectGuess < 8; incorrectGuess++)
+        cout << getDrawing(incorrectGuess) << endl;
 }
