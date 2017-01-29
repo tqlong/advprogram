@@ -50,9 +50,65 @@ string chooseWord()
 
 string getDrawing(int incorrectGuess)
 {
-    string figure[] = {
-        "fig1", "fig2", "fig3", "fig4", "fig5", "fig6", "fig7", "fig8"
+        string figure[] = {
+                "   -------------    \n"
+                "   |                \n"
+                "   |                \n"
+                "   |                \n"
+                "   |                \n"
+                "   |     \n"
+                " -----   \n",
+                "   -------------    \n"
+                "   |           |    \n"
+                "   |                \n"
+                "   |                \n"
+                "   |                \n"
+                "   |     \n"
+                " -----   \n",
+                "   -------------    \n"
+                "   |           |    \n"
+                "   |           O    \n"
+                "   |                \n"
+                "   |                \n"
+                "   |     \n"
+                " -----   \n",
+                "   -------------    \n"
+                "   |           |    \n"
+                "   |           O    \n"
+                "   |           |    \n"
+                "   |                \n"
+                "   |     \n"
+                " -----   \n",
+                "   -------------    \n"
+                "   |           |    \n"
+                "   |           O    \n"
+                "   |          /|    \n"
+                "   |                \n"
+                "   |     \n"
+                " -----   \n",
+                "   -------------    \n"
+                "   |           |    \n"
+                "   |           O    \n"
+                "   |          /|\\  \n"
+                "   |                \n"
+                "   |     \n"
+                " -----   \n",
+                "   -------------    \n"
+                "   |           |    \n"
+                "   |           O    \n"
+                "   |          /|\\  \n"
+                "   |          /     \n"
+                "   |     \n"
+                " -----   \n",
+                "   -------------    \n"
+                "   |           |    \n"
+                "   |           O    \n"
+                "   |          /|\\  \n"
+                "   |          / \\  \n"
+                "   |     \n"
+                " -----   \n",
     };
+
     const int NUMBER_OF_FIGURES = sizeof(figure) / sizeof(string);
     return figure[incorrectGuess % NUMBER_OF_FIGURES];
 }
