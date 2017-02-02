@@ -133,27 +133,54 @@ bool isCharInWord(char ch, string word)
     return (word.find_first_of(ch) != string::npos);
 }
 
+void initialize(string& word, string& secretWord,
+                int& incorrectGuess, int& correctGuess,
+                string& incorrectChars, string& correctChars)
+{
+    word = chooseWord();
+    secretWord = string(word.length(), '-');
+    incorrectGuess = 0;
+    correctGuess = 0;
+    incorrectChars = "";
+    correctChars = "";
+}
+
+void render(string word, string secretWord,
+            int incorrectGuess, int correctGuess,
+            string incorrectChars, string correctChars, int MAX_GUESSES)
+{
+    cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+    cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+    cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+
+    cout << getDrawing(incorrectGuess)
+         << endl << "Current word: " << secretWord
+         << endl << "Correct guesses: " << correctChars
+         << endl << "Incorrect guesses: " << incorrectChars
+         << endl << "Choose a character: ";
+
+    if (correctGuess == (int)word.length())
+        cout << endl << "Well done :D. The word is: " << word << endl;
+
+    if (incorrectGuess == MAX_GUESSES)
+        cout << endl << "You lose :(. The word is: " << word << endl;
+}
+
 int main()
 {
     srand(time(0));
 
     char ch;
-    string word = chooseWord();
-    string secretWord = string(word.length(), '-');
-    int incorrectGuess = 0, correctGuess = 0;
-    string incorrectChars = "", correctChars = "";
+    string word, secretWord;
+    int incorrectGuess, correctGuess;
+    string incorrectChars, correctChars;
     const int MAX_GUESSES = 8;
 
-    while (true) {
-        cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
-        cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
-        cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+    initialize(word, secretWord, incorrectGuess, correctGuess, incorrectChars, correctChars);
 
-        cout << getDrawing(incorrectGuess)
-             << endl << "Current word: " << secretWord
-             << endl << "Correct guesses: " << correctChars
-             << endl << "Incorrect guesses: " << incorrectChars
-             << endl << "Choose a character: ";
+    do {
+        render(word, secretWord, incorrectGuess, correctGuess, incorrectChars, correctChars, MAX_GUESSES);
+
         cin >> ch;
 
         if (isCharInWord(ch, word)) {
@@ -166,17 +193,8 @@ int main()
             incorrectChars += ch;
             incorrectGuess ++;
         }
-
-        if (correctGuess == (int)word.length()) {
-            cout << endl << "Well done :D. The word is: " << word << endl;
-            break;
-        }
-
-        if (incorrectGuess == MAX_GUESSES) {
-            cout << endl << "You lose :(. The word is: " << word << endl;
-            break;
-        }
-    } // while
+    } while (correctGuess < (int)word.length() && incorrectGuess < MAX_GUESSES);
+    render(word, secretWord, incorrectGuess, correctGuess, incorrectChars, correctChars, MAX_GUESSES);
     return 0;
 }
 
