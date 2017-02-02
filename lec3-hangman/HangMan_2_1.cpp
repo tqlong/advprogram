@@ -194,7 +194,7 @@ int main()
     string word, secretWord;
     int incorrectGuess, correctGuess;
     string incorrectChars, correctChars;
-    const int MAX_GUESSES = 8;
+    const int MAX_GUESSES = 7;
 
     initialize(word, secretWord, incorrectGuess, correctGuess, incorrectChars, correctChars);
 

@@ -142,7 +142,7 @@ int main()
     string secretWord = string(word.length(), '-');
     int incorrectGuess = 0, correctGuess = 0;
     string incorrectChars = "", correctChars = "";
-    const int MAX_GUESSES = 8;
+    const int MAX_GUESSES = 7;
 
     while (true) {
         cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
