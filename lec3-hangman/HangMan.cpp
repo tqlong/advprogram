@@ -143,6 +143,10 @@ int main()
     const int MAX_GUESSES = 8;
 
     while (true) {
+        cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+        cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+        cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+
         cout << getDrawing(incorrectGuess)
              << endl << "Current word: " << secretWord
              << endl << "Correct guesses: " << correctChars
