@@ -128,13 +128,7 @@ string updateSecretWord(char ch, string secretWord, string word)
 
 bool isCharInWord(char ch, string word)
 {
-    int len = word.length();
-    for (int i = 0; i < len; ++i) {
-        if (word[i] == ch) {
-            return true;
-        }
-    }
-    return false;
+    return (word.find_first_of(ch) != string::npos);
 }
 
 int main()
@@ -157,8 +151,10 @@ int main()
         cin >> ch;
 
         if (isCharInWord(ch, word)) {
-            correctChars += ch;
-            correctGuess ++;
+            if (!isCharInWord(ch, correctChars)) {
+                correctChars += ch;
+                correctGuess ++;
+            }
         } else {
             incorrectChars += ch;
             incorrectGuess ++;
