@@ -4,6 +4,7 @@
 #include <ctime>
 #include <fstream>
 #include <vector>
+#include <cctype>
 
 using namespace std;
 
@@ -190,11 +191,21 @@ vector<string> readWordListFromFile(const string& filePath)
     }
 }
 
+string getLowerString(const string& s)
+{
+    string res = s;
+    int sz = s.size();
+    for (int i = 0; i < sz; i++)
+        res[i] = tolower(s[i]);
+    return res;
+}
+
 string chooseWordFromList(const vector<string>& wordList)
 {
     if (wordList.empty()) return "";
     const int NUMBER_OF_WORDS = wordList.size();
-    return wordList[generateRandomNumber(0, NUMBER_OF_WORDS)];
+    string word = wordList[generateRandomNumber(0, NUMBER_OF_WORDS)];
+    return getLowerString(word);
 }
 
 void initialize(vector<string>& wordList, string& word, string& secretWord,
