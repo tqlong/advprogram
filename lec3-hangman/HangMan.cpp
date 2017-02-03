@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <cctype>
+#include <algorithm>
 
 using namespace std;
 
@@ -194,9 +195,7 @@ vector<string> readWordListFromFile(const string& filePath)
 string getLowerString(const string& s)
 {
     string res = s;
-    int sz = s.size();
-    for (int i = 0; i < sz; i++)
-        res[i] = tolower(s[i]);
+    transform(s.begin(), s.end(), res.begin(), ::tolower);
     return res;
 }
 
