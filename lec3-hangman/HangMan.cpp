@@ -219,6 +219,13 @@ void initialize(vector<string>& wordList, string& word, string& secretWord,
     correctChars = "";
 }
 
+char getUserInput()
+{
+    char ch;
+    cin >> ch;
+    return tolower(ch);
+}
+
 int main()
 {
     srand(time(0));
@@ -234,7 +241,7 @@ int main()
 
     do {
         render(word, secretWord, incorrectGuess, incorrectChars, correctChars, MAX_GUESSES);
-        cin >> ch;
+        ch = getUserInput();
         update(ch, word, secretWord, incorrectGuess, incorrectChars, correctChars);
     } while (word != secretWord && incorrectGuess < MAX_GUESSES);
     render(word, secretWord, incorrectGuess, incorrectChars, correctChars, MAX_GUESSES);
