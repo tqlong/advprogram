@@ -1,4 +1,5 @@
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 
@@ -141,4 +142,13 @@ string getNextStandingman()
     const int NUMBER_OF_FIGURES = sizeof(figure) / sizeof(string);
     static int currentFigure = 0;
     return figure[(currentFigure++) % NUMBER_OF_FIGURES];
+}
+
+void clearScreen()
+{
+#ifdef __WIN32__
+    system("cls");
+#else
+    for (int i = 0; i < 30; i++) cout << endl;
+#endif
 }

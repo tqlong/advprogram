@@ -146,6 +146,7 @@ char getUserInput()
 
 void playAnimation(bool isLosing, const string& word)
 {
+    clearScreen();
     while (true) {
         if (isLosing)
             cout << endl << "You lose :(. The word is: " << word << endl;
@@ -153,7 +154,7 @@ void playAnimation(bool isLosing, const string& word)
             cout << endl << "Well done :D. The word is: " << word << endl;
         cout << (isLosing ? getNextHangman() : getNextStandingman());
         this_thread::sleep_for(chrono::milliseconds(500));
-        for (int i = 0; i < 30; i++) cout << endl;
+        clearScreen();
     }
 }
 
