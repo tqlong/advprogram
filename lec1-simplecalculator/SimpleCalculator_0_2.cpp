@@ -27,7 +27,7 @@ int arithmetic(int num1, int num2, char op)
         return num1 + num2;
     case '-':
         return num1 - num2;
-    case '*':
+    case 'x':
         return num1 * num2;
     case '/':
         if (num2 == 0)
