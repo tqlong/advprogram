@@ -116,7 +116,7 @@ int main()
     do {
         char guess = getNextGuess(previousGuesses, secretWord);
         if (guess == 0) {
-            cout << "I give up" << endl;
+            cout << "I give up, hang me" << endl;
             return 0;
         }
 
