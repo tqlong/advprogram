@@ -8,3 +8,6 @@ CTestTestfile.cmake
 *.exe
 a.out
 *.o
+*.depend
+*.layout
+*.dll
