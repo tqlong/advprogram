@@ -32,3 +32,17 @@ vector<string> readWordListFromFile(const string& filePath)
         throw domain_error("Error: Unable to open vocabulary file " + filePath);
     }
 }
+
+bool isAllDash(const string& s)
+{
+    for (unsigned int i = 0; i < s.length(); i++)
+        if (s[i] != '-') return false;
+    return true;
+}
+
+bool isAllNotDash(const string& s)
+{
+    for (unsigned int i = 0; i < s.length(); i++)
+        if (s[i] == '-') return false;
+    return true;
+}
