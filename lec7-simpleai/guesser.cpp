@@ -15,7 +15,7 @@ string getRemainingChars(const string& previousGuesses)
 
 char getVowelGuess(const string& remainingChars)
 {
-    char vowel[] = {'a', 'e', 'i', 'o', 'u'};
+    char vowel[] = {'e', 'a', 'o', 'i', 'u'};
     for (int i = 0; i < 5; i++) {
         if (isCharInWord(vowel[i], remainingChars))
             return vowel[i];
