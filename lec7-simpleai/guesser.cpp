@@ -26,9 +26,9 @@ char selectRandomChar(const set<char>& s) {
 char getVowelGuess(const set<char>& remainingChars)
 {
     char vowel[] = {'e', 'a', 'o', 'i', 'u'};
-    for (int i = 0; i < 5; i++) {
-        if (remainingChars.find(vowel[i]) != remainingChars.end())
-            return vowel[i];
+    for (char c : vowel) {
+        if (remainingChars.find(c) != remainingChars.end())
+            return c;
     }
     return 0;
 }
@@ -51,9 +51,9 @@ vector<string> getSuitableWords(const vector<string>& wordList,
                                 const set<char>& remainingChars)
 {
     vector<string> result;
-    for (unsigned int i = 0; i < wordList.size(); i++)
-        if (isSuitableWord(wordList[i], secretWord, remainingChars))
-            result.push_back(wordList[i]);
+    for (const string& word : wordList)
+        if (isSuitableWord(word, secretWord, remainingChars))
+            result.push_back(word);
     return result;
 }
 
@@ -62,11 +62,10 @@ map<char, int> getOccurenceCount(const set<char>& remainingChars, const vector<s
     map<char, int> count;
     for (char c: remainingChars) count[c] = 0;
 
-    for (unsigned int i = 0; i < wordList.size(); i++) {
-        const string& word = wordList[i];
-        for (unsigned int j = 0; j < word.length(); j++)
-            if (count.find(word[j]) != count.end())
-                count[word[j]]++;
+    for (const string& word : wordList) {
+        for (char c : word)
+            if (count.find(c) != count.end())
+                count[c]++;
     }
     return count;
 }

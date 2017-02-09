@@ -35,14 +35,14 @@ vector<string> readWordListFromFile(const string& filePath)
 
 bool isAllDash(const string& s)
 {
-    for (unsigned int i = 0; i < s.length(); i++)
-        if (s[i] != '-') return false;
+    for (char c : s)
+        if (c != '-') return false;
     return true;
 }
 
 bool isAllNotDash(const string& s)
 {
-    for (unsigned int i = 0; i < s.length(); i++)
-        if (s[i] == '-') return false;
+    for (char c : s)
+        if (c == '-') return false;
     return true;
 }
