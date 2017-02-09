@@ -1,4 +1,5 @@
 #include <iostream>
+#include <set>
 #include <cctype>
 #include <algorithm>
 #include <stdexcept>
@@ -22,13 +23,13 @@ int getUserWordLength()
 }
 
 void initialize(int& wordLength, string& secretWord,
-                int& incorrectGuess, string& previousGuesses,
+                int& incorrectGuess, set<char>& previousGuesses,
                 bool& stop)
 {
     wordLength = getUserWordLength();
     secretWord = string(wordLength, '-');
     incorrectGuess = 0;
-    previousGuesses = "";
+    previousGuesses = set<char>();
     stop = false;
 }
 
@@ -62,13 +63,13 @@ void updateSecretWord(const string& mask, string& secretWord)
 }
 
 void update(char guess, const string& mask,
-            int& incorrectGuess, string& previousGuesses,
+            int& incorrectGuess, set<char>& previousGuesses,
             string& secretWord, bool& stop)
 {
     if (!isGoodMask(guess, mask, secretWord))
         throw invalid_argument("mistake entering answer");
 
-    previousGuesses += guess;
+    previousGuesses.insert(guess);
     if (isAllDash(mask)) {
         incorrectGuess ++;
         if (incorrectGuess == MAX_GUESSES) stop = true;
@@ -78,13 +79,15 @@ void update(char guess, const string& mask,
     }
 }
 
-void render(int incorrectGuess, const string& previousGuesses,
+void render(int incorrectGuess, const set<char>& previousGuesses,
             const string& secretWord)
 {
     clearScreen();
     cout << endl << "Incorrect guess = " << incorrectGuess
-         << "   previous guesses = " << previousGuesses
-         << "   secretWord = " << secretWord << endl;
+         << "   previous guesses = ";
+    for (char c : previousGuesses)
+        cout << c;
+    cout << "   secretWord = " << secretWord << endl;
     cout << getDrawing(incorrectGuess) << endl;
 }
 
@@ -107,7 +110,7 @@ int main()
     int wordLength;
     string secretWord;
     int incorrectGuess;
-    string previousGuesses;
+    set<char> previousGuesses;
     bool stop;
 
     initialize(wordLength, secretWord, incorrectGuess, previousGuesses, stop);
