@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
             }
         } while (!guesser.isStop());
         count++;
-        if (count % 1 == 0) {
+        if (count % 200 == 0) {
             cout << word << " " << guesses << " " << guesser.getSecretWord() << " " << guesser.getIncorrectGuess() << endl;
             cout << count << " words processed, average #guesses = "
                  << totalGuess / count << endl;

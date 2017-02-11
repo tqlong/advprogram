@@ -1,5 +1,6 @@
 #include <string>
 #include <cstdlib>
+#include <algorithm>
 #include "guesser.h"
 #include "util.h"
 
@@ -56,15 +57,17 @@ vector<string> Guesser::getSuitableWords(const vector<string>& wordList,
     return result;
 }
 
-vector<int> Guesser::getSuitableWordsIndex(const vector<string>& wordList,
+vector<int> Guesser::getSuitableWordsIndex(const vector<int>& index,
                                 const string& secretWord,
                                 const set<char>& remainingChars)
 {
     vector<int> result;
-    int n = wordList.size();
-    for (int i = 0; i < n; i++)
-        if (isSuitableWord(wordList[i], secretWord, remainingChars))
-            result.push_back(i);
+    int n = index.size();
+    for (int i = 0; i < n; i++) {
+        int idx = index[i];
+        if (isSuitableWord(wordList[idx], secretWord, remainingChars))
+            result.push_back(idx);
+    }
     return result;
 }
 
@@ -124,6 +127,8 @@ void Guesser::newGame(int wordLength)
     incorrectGuess = 0;
     previousGuesses = set<char>();
     stop = false;
+    filteredWordIndex = vector<int>(wordList.size());
+    iota(filteredWordIndex.begin(), filteredWordIndex.end(), 0);
 }
 
 void Guesser::receiveHostAnswer(char guess, const std::string& mask)
@@ -172,7 +177,7 @@ char Guesser::getNextGuess()
 
 //    vector<string> filteredWordList = getSuitableWords(wordList, secretWord, remainingChars);
 //    map<char, int> occurenceCount = getOccurenceCount(remainingChars, filteredWordList);
-    vector<int> filteredWordIndex = getSuitableWordsIndex(wordList, secretWord, remainingChars);
+    filteredWordIndex = getSuitableWordsIndex(filteredWordIndex, secretWord, remainingChars);
     map<char, int> occurenceCount = getOccurenceCount(remainingChars, wordList, filteredWordIndex);
     return getMaxOccurenceChar(remainingChars, occurenceCount);
 }

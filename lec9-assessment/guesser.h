@@ -13,6 +13,7 @@ private:
     std::set<char> previousGuesses;
     bool stop;
     std::vector<std::string> wordList;
+    std::vector<int> filteredWordIndex;
 private:
     bool isGoodMask(char guess, const std::string& mask);
     void updateSecretWord(const std::string& mask);
@@ -23,7 +24,7 @@ private:
     char getMaxOccurenceChar(const std::set<char>& remainingChars, const std::map<char, int>& count);
     bool isSuitableWord(const std::string& word, const std::string& secretWord, const std::set<char>& remainingChars);
     std::vector<std::string> getSuitableWords(const std::vector<std::string>& wordList, const std::string& secretWord, const std::set<char>& remainingChars);
-    std::vector<int> getSuitableWordsIndex(const std::vector<std::string>& wordList, const std::string& secretWord, const std::set<char>& remainingChars);
+    std::vector<int> getSuitableWordsIndex(const std::vector<int>& index, const std::string& secretWord, const std::set<char>& remainingChars);
     std::map<char, int> getOccurenceCount(const std::set<char>& remainingChars, const std::vector<std::string>& wordList, const std::vector<int>& index);
 public:
     const int MAX_GUESSES = 7;
