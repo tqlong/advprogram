@@ -96,11 +96,13 @@ string getMask(char guess, const string& word)
 int main(int argc, char* argv[])
 {
     string testFile = argc > 1 ? argv[1] : "data/Ogden_Picturable_200.txt";
+    string dictFile = argc > 2 ? argv[2] : "data/dictionary.txt";
     vector<string> testWordList = readWordListFromFile(testFile);
 
     double totalGuess = 0;
+    int count = 0;
     for (const string& word : testWordList) {
-        Guesser guesser;
+        Guesser guesser(dictFile);
         guesser.newGame(word.length());
         do {
             char guess = guesser.getNextGuess();
@@ -113,9 +115,14 @@ int main(int argc, char* argv[])
                 totalGuess += guesser.getIncorrectGuess();
             }
         } while (!guesser.isStop());
+        count++;
+        if (count % 100 == 0)
+            cout << count << " words processed, average #guesses = "
+                 << totalGuess / count << endl;
     }
-    cout << "For testFile " << testFile
-         << ", average number of guesses = " << totalGuess / testWordList.size()
+    cout << "Using dictFile " << dictFile << endl
+         << "For testFile " << testFile << " with " << testWordList.size() << " words" << endl
+         << "average #guesses = " << totalGuess / testWordList.size()
          << endl;
     return 0;
 }
