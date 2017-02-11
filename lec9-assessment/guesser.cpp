@@ -87,6 +87,11 @@ Guesser::Guesser()
     wordList = readWordListFromFile("data/Ogden_Picturable_200.txt");
 }
 
+Guesser::Guesser(const string& wordFile)
+{
+    wordList = readWordListFromFile(wordFile);
+}
+
 void Guesser::newGame(int wordLength)
 {
     secretWord = string(wordLength, '-');

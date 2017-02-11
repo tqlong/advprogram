@@ -56,7 +56,7 @@ void playAnimation(const Guesser& guesser)
     }
 }
 
-int main()
+int playHangman()
 {
     Guesser guesser;
     guesser.newGame(getUserWordLength());
@@ -82,5 +82,40 @@ int main()
     } while (!guesser.isStop());
     playAnimation(guesser);
 
+    return 0;
+}
+
+string getMask(char guess, const string& word)
+{
+    string mask(word.length(), '-');
+    for (unsigned int i = 0; i < word.length(); i++)
+        if (tolower(word[i]) == guess) mask[i] = guess;
+    return mask;
+}
+
+int main(int argc, char* argv[])
+{
+    string testFile = argc > 1 ? argv[1] : "data/Ogden_Picturable_200.txt";
+    vector<string> testWordList = readWordListFromFile(testFile);
+
+    double totalGuess = 0;
+    for (const string& word : testWordList) {
+        Guesser guesser;
+        guesser.newGame(word.length());
+        do {
+            char guess = guesser.getNextGuess();
+            if (guess == 0) {
+                totalGuess += guesser.MAX_GUESSES;
+                break;
+            }
+            guesser.receiveHostAnswer(guess, getMask(guess, word));
+            if (guesser.isStop()) {
+                totalGuess += guesser.getIncorrectGuess();
+            }
+        } while (!guesser.isStop());
+    }
+    cout << "For testFile " << testFile
+         << ", average number of guesses = " << totalGuess / testWordList.size()
+         << endl;
     return 0;
 }

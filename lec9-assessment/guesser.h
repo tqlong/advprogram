@@ -27,6 +27,7 @@ public:
     const int MAX_GUESSES = 7;
 public:
     Guesser();
+    Guesser(const std::string& wordFile);
     void newGame(int wordLength);
     void receiveHostAnswer(char guess, const std::string& mask);
     char getNextGuess();
