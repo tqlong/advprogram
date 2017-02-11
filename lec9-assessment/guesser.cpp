@@ -1,6 +1,5 @@
 #include <string>
 #include <cstdlib>
-#include <map>
 #include "guesser.h"
 #include "util.h"
 
@@ -57,12 +56,39 @@ vector<string> Guesser::getSuitableWords(const vector<string>& wordList,
     return result;
 }
 
+vector<int> Guesser::getSuitableWordsIndex(const vector<string>& wordList,
+                                const string& secretWord,
+                                const set<char>& remainingChars)
+{
+    vector<int> result;
+    int n = wordList.size();
+    for (int i = 0; i < n; i++)
+        if (isSuitableWord(wordList[i], secretWord, remainingChars))
+            result.push_back(i);
+    return result;
+}
+
 map<char, int> Guesser::getOccurenceCount(const set<char>& remainingChars, const vector<string>& wordList)
 {
     map<char, int> count;
     for (char c: remainingChars) count[c] = 0;
 
     for (const string& word : wordList) {
+        for (char c : word)
+            if (count.find(c) != count.end())
+                count[c]++;
+    }
+    return count;
+}
+
+map<char, int> Guesser::getOccurenceCount(const set<char>& remainingChars, const vector<string>& wordList, const vector<int>& index)
+{
+    map<char, int> count;
+    for (char c: remainingChars) count[c] = 0;
+
+    int n = index.size();
+    for (int i = 0; i < n; i++) {
+        const string& word = wordList[index[i]];
         for (char c : word)
             if (count.find(c) != count.end())
                 count[c]++;
@@ -144,7 +170,9 @@ char Guesser::getNextGuess()
     if (isAllDash(secretWord))
         return getVowelGuess(remainingChars);
 
-    vector<string> filteredWordList = getSuitableWords(wordList, secretWord, remainingChars);
-    map<char, int> occurenceCount = getOccurenceCount(remainingChars, filteredWordList);
+//    vector<string> filteredWordList = getSuitableWords(wordList, secretWord, remainingChars);
+//    map<char, int> occurenceCount = getOccurenceCount(remainingChars, filteredWordList);
+    vector<int> filteredWordIndex = getSuitableWordsIndex(wordList, secretWord, remainingChars);
+    map<char, int> occurenceCount = getOccurenceCount(remainingChars, wordList, filteredWordIndex);
     return getMaxOccurenceChar(remainingChars, occurenceCount);
 }

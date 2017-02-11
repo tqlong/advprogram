@@ -104,8 +104,10 @@ int main(int argc, char* argv[])
     for (const string& word : testWordList) {
         Guesser guesser(dictFile);
         guesser.newGame(word.length());
+        string guesses;
         do {
             char guess = guesser.getNextGuess();
+            guesses += guess;
             if (guess == 0) {
                 totalGuess += guesser.MAX_GUESSES;
                 break;
@@ -116,9 +118,11 @@ int main(int argc, char* argv[])
             }
         } while (!guesser.isStop());
         count++;
-        if (count % 100 == 0)
+        if (count % 1 == 0) {
+            cout << word << " " << guesses << " " << guesser.getSecretWord() << " " << guesser.getIncorrectGuess() << endl;
             cout << count << " words processed, average #guesses = "
                  << totalGuess / count << endl;
+        }
     }
     cout << "Using dictFile " << dictFile << endl
          << "For testFile " << testFile << " with " << testWordList.size() << " words" << endl
