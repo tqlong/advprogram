@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 #include <SDL2/SDL.h>
 
 #include "painter.h"
@@ -18,6 +19,11 @@ void waitUntilKeyPressed();
 
 void randomWalk(Painter& painter);
 void drawMandelbrot(Painter& painter, float xmin = -2, float ymin = -1.5, float xmax = 2, float ymax = 1.5);
+void drawRecursiveCircle(Painter& painter, float radius = 400);
+void drawRecursiveCircle2(Painter& painter, float radius);
+void drawRecursiveCircle4(Painter& painter, float radius);
+void drawCantor(Painter& painter, float len);
+void drawKoch(Painter& painter, float len, int levels);
 
 int main(int argc, char* argv[])
 {
@@ -283,7 +289,34 @@ int main(int argc, char* argv[])
         }
         break;
     case 17:
-        drawMandelbrot(painter);
+        drawMandelbrot(painter, 2*0.17, 1.5*0.17, 2*0.25,1.5*0.25);
+        break;
+    case 18:
+        painter.jumpBackward(400);
+        drawRecursiveCircle(painter, 400);
+        break;
+    case 19:
+        painter.jumpBackward(400);
+        drawRecursiveCircle2(painter, 400);
+        break;
+    case 20:
+        painter.jumpBackward(400);
+        drawRecursiveCircle4(painter, 400);
+        break;
+    case 21:
+        painter.jumpBackward(728/2);
+        drawCantor(painter, 729);
+        break;
+    case 22:
+        painter.jumpBackward(728/2);
+        drawKoch(painter, 27*27, 5);
+        break;
+    case 23:
+        painter.setPosition(painter.getX()-100,painter.getY()-100);
+        for (int i = 0; i < 3; i++) {
+            drawKoch(painter, 27*27/3, 5);
+            painter.turnRight(120);
+        }
         break;
     }
 
@@ -398,5 +431,77 @@ void drawMandelbrot(Painter& painter, float xmin, float ymin, float xmax, float 
             painter.setColor(color);
             SDL_RenderDrawPoint(painter.getRenderer(), px, py);
         }
+    }
+}
+
+void drawRecursiveCircle(Painter& painter, float radius)
+{
+    painter.createCircle(radius);
+    if(radius > 2) {
+        painter.jumpForward(radius*0.25f);
+        radius *= 0.75f;
+        drawRecursiveCircle(painter, radius);
+        painter.jumpBackward(radius*0.25f);
+    }
+}
+
+void drawRecursiveCircle2(Painter& painter, float radius)
+{
+    painter.createCircle(radius);
+    if(radius > 2) {
+        painter.jumpBackward(radius / 2);
+        drawRecursiveCircle2(painter, radius / 2);
+        painter.jumpForward(radius * 2);
+        drawRecursiveCircle2(painter, radius / 2);
+        painter.jumpBackward(radius*3/2);
+    }
+}
+
+void drawRecursiveCircle4(Painter& painter, float radius)
+{
+    painter.createCircle(radius);
+    if(radius > 8) {
+        float x = painter.getX(), y = painter.getY();
+        painter.setPosition(x-radius/2,y);
+        drawRecursiveCircle4(painter, radius / 2);
+        painter.setPosition(x+radius/2,y-radius);
+        drawRecursiveCircle4(painter, radius / 2);
+        painter.setPosition(x+radius*3/2,y);
+        drawRecursiveCircle4(painter, radius / 2);
+        painter.setPosition(x+radius/2,y+radius);
+        drawRecursiveCircle4(painter, radius / 2);
+        painter.setPosition(x,y);
+    }
+}
+
+void drawCantor(Painter& painter, float len)
+{
+    cout << len << endl;
+    if (len >= 1) {
+        float x = painter.getX(), y = painter.getY();
+        for (int i = 0; i < 7; i++) {
+            painter.moveForward(floor(len));
+            painter.setPosition(x, y+i);
+        }
+        painter.setPosition(x, y+20);
+        drawCantor(painter, len / 3);
+        painter.setPosition(x + len*2/3, y+20);
+        drawCantor(painter, len / 3);
+        painter.setPosition(x,y);
+    }
+}
+
+void drawKoch(Painter& painter, float len, int levels)
+{
+    if (levels == 1) {
+        painter.moveForward(len);
+    } else {
+        drawKoch(painter, len/3, levels-1);
+        painter.turnLeft(60);
+        drawKoch(painter, len/3, levels-1);
+        painter.turnRight(120);
+        drawKoch(painter, len/3, levels-1);
+        painter.turnLeft(60);
+        drawKoch(painter, len/3, levels-1);
     }
 }
