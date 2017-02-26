@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <SDL2/SDL.h>
 
 const SDL_Color CYAN_COLOR = {0, 255, 255};
@@ -69,4 +70,7 @@ public:
     void createCircle(float radius);
     void createSquare(float size);
     void createParallelogram(float size);
+
+    SDL_Texture* loadTexture( std::string path );
+    bool createImage( SDL_Texture* texture );
 };

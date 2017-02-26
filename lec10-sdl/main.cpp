@@ -17,16 +17,18 @@ void quitSDL(SDL_Window* window, SDL_Renderer* renderer);
 void waitUntilKeyPressed();
 
 void randomWalk(Painter& painter);
+void drawMandelbrot(Painter& painter, float xmin = -2, float ymin = -1.5, float xmax = 2, float ymax = 1.5);
 
 int main(int argc, char* argv[])
 {
     srand(time(0));
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Texture* texture = NULL;
     initSDL(window, renderer);
 
     Painter painter(window, renderer);
-    int figNumber = argc > 1 ? atoi(argv[1]) : 3;
+    int figNumber = argc > 1 ? atoi(argv[1]) : 17;
     switch (figNumber)
     {
     /* Square */
@@ -269,10 +271,25 @@ int main(int argc, char* argv[])
     case 15:
         randomWalk(painter);
         break;
+    case 16:
+        {
+            if (argc <= 2) {
+                cout << "Please provide image file path" << endl;
+                break;
+            }
+            texture = painter.loadTexture(argv[2]);
+            painter.clearWithBgColor(WHITE_COLOR);
+            painter.createImage(texture);
+        }
+        break;
+    case 17:
+        drawMandelbrot(painter);
+        break;
     }
 
     SDL_RenderPresent(renderer);
 	waitUntilKeyPressed();
+	SDL_DestroyTexture(texture);
     quitSDL(window, renderer);
     return 0;
 }
@@ -339,5 +356,47 @@ void randomWalk(Painter& painter)
         painter.moveForward(length);
         float angle = generateRandomNumber() * 360;
         painter.turnLeft(angle);
+    }
+}
+
+const SDL_Color PALLETTE[] = {
+    SDL_Color({66, 30, 15}),
+    SDL_Color({25, 7, 26}),
+    SDL_Color({9, 1, 47}),
+    SDL_Color({4, 4, 73}),
+    SDL_Color({0, 7, 100}),
+    SDL_Color({12, 44, 138}),
+    SDL_Color({24, 82, 177}),
+    SDL_Color({57, 125, 209}),
+    SDL_Color({134, 181, 229}),
+    SDL_Color({211, 236, 248}),
+    SDL_Color({241, 233, 191}),
+    SDL_Color({248, 201, 95}),
+    SDL_Color({255, 170, 0}),
+    SDL_Color({204, 128, 0}),
+    SDL_Color({153, 87, 0}),
+    SDL_Color({106, 52, 3})
+};
+const int PALETTE_COUNT = sizeof(PALLETTE) / sizeof(SDL_Color);
+
+void drawMandelbrot(Painter& painter, float xmin, float ymin, float xmax, float ymax)
+{
+    int width = painter.getWidth(), height = painter.getHeight();
+    const int MAX_ITERATION = 1000;
+    for (int px = 0; px < width; px++) {
+        for (int py = 0; py < painter.getHeight(); py++) {
+            float x0 = (float)px / width * (xmax-xmin) + xmin, x = 0;
+            float y0 = (float)py / height * (ymax-ymin) + ymin, y = 0;
+            int iteration = 0;
+            while (x*x+y*y < 2 && iteration < MAX_ITERATION) {
+                float xtemp = x*x-y*y+x0;
+                y = 2*x*y+y0;
+                x = xtemp;
+                iteration++;
+            }
+            SDL_Color color = iteration < MAX_ITERATION ? PALLETTE[iteration % PALETTE_COUNT] : BLACK_COLOR;
+            painter.setColor(color);
+            SDL_RenderDrawPoint(painter.getRenderer(), px, py);
+        }
     }
 }

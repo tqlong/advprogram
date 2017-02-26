@@ -1,7 +1,12 @@
 #include <cmath>
 #include <cstdlib>
+#include <iostream>
+
+#include <SDL2/SDL_image.h>
 
 #include "painter.h"
+
+using namespace std;
 
 Painter::Painter(SDL_Window* window, SDL_Renderer* renderer_)
     : renderer(renderer_)
@@ -60,7 +65,8 @@ void Painter::setRandomColor()
     Uint8 r = rand() % 256;
     Uint8 g = rand() % 256;
     Uint8 b = rand() % 256;
-    setColor((SDL_Color) { r, g, b });
+    SDL_Color color = {r, g, b};
+    setColor(color);
 }
 
 void Painter::createCircle(float radius)
@@ -113,4 +119,26 @@ void Painter::createParallelogram(float size)
         moveForward(size);
         turnLeft(120);
     }
+}
+
+SDL_Texture* Painter::loadTexture( string path )
+{
+    SDL_Texture* newTexture = NULL;
+    SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
+    if ( loadedSurface == NULL )
+        cout << "Unable to load image " << path << " SDL_image Error: " << IMG_GetError() << endl;
+    else {
+        newTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
+        if( newTexture == NULL )
+            cout << "Unable to create texture from " << path << " SDL Error: " << SDL_GetError() << endl;
+        SDL_FreeSurface( loadedSurface );
+    }
+    return newTexture;
+}
+
+bool Painter::createImage( SDL_Texture* texture )
+{
+    if( texture == NULL ) return false;
+    SDL_RenderCopy( renderer, texture, NULL, NULL );
+    return true;
 }
