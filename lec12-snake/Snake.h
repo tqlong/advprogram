@@ -1,16 +1,17 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
+class PlayGround;
 
 class Snake
 {
-    public:
-        Snake();
-        ~Snake();
+public:
+    Snake(PlayGround* playGround);
+    ~Snake();
 
-    protected:
+protected:
 
-    private:
+private:
 };
 
 #endif // SNAKE_H

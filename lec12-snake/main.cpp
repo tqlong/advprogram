@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 
 #include "painter.h"
+#include "PlayGround.h"
 
 using namespace std;
 
@@ -12,10 +13,19 @@ const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 const string WINDOW_TITLE = "Snake Game";
 
+const int GROUND_WIDTH = 30;
+const int GROUND_HEIGHT = 20;
+
 void logSDLError(std::ostream& os, const std::string &msg, bool fatal = false);
 void initSDL(SDL_Window* &window, SDL_Renderer* &renderer);
 void quitSDL(SDL_Window* window, SDL_Renderer* renderer);
 void waitUntilKeyPressed();
+
+void renderSplashScreen();
+void renderGamePlay(Painter&, const PlayGround& playGround);
+void renderGameOver(Painter&, const PlayGround& playGround);
+UserInput interpretEvent(SDL_Event e);
+void updateRankingTable(const PlayGround& playGround);
 
 int main(int argc, char* argv[])
 {
@@ -23,11 +33,25 @@ int main(int argc, char* argv[])
     SDL_Window* window;
     SDL_Renderer* renderer;
     initSDL(window, renderer);
-
     Painter painter(window, renderer);
 
-    SDL_RenderPresent(renderer);
-    waitUntilKeyPressed();
+    renderSplashScreen();
+    PlayGround playGround(GROUND_WIDTH, GROUND_HEIGHT);
+
+    SDL_Event e;
+    renderGamePlay(painter, playGround);
+    while (playGround.isGameRunning()) {
+        if (SDL_WaitEvent(&e) != 0) {
+            UserInput input = interpretEvent(e);
+            playGround.processUserInput(input);
+        }
+        playGround.nextStep();
+        renderGamePlay(painter, playGround);
+        SDL_Delay(100);
+    }
+    renderGameOver(painter, playGround);
+    updateRankingTable(playGround);
+
     quitSDL(window, renderer);
     return 0;
 }
@@ -82,4 +106,29 @@ void waitUntilKeyPressed()
 float generateRandomNumber()
 {
     return (float) rand() / RAND_MAX;
+}
+
+void renderSplashScreen()
+{
+
+}
+
+void renderGamePlay(Painter&, const PlayGround& playGround)
+{
+
+}
+
+void renderGameOver(Painter&, const PlayGround& playGround)
+{
+
+}
+
+UserInput interpretEvent(SDL_Event e)
+{
+    return NO_INPUT;
+}
+
+void updateRankingTable(const PlayGround& playGround)
+{
+
 }

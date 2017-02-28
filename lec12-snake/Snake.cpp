@@ -1,6 +1,7 @@
 #include "Snake.h"
+#include "PlayGround.h"
 
-Snake::Snake()
+Snake::Snake(PlayGround* playGround)
 {
     //ctor
 }

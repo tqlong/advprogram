@@ -1,8 +1,15 @@
+#include <vector>
 #include "PlayGround.h"
 
-PlayGround::PlayGround()
+using namespace std;
+
+PlayGround::PlayGround(int width, int height)
+    : squares(height, vector<CellType>(width, CELL_EMPTY)),
+      snake(this),
+      status(GAME_RUNNING),
+      score(0)
 {
-    //ctor
+    addCherry();
 }
 
 PlayGround::~PlayGround()
