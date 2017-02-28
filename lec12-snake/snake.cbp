@@ -42,6 +42,7 @@
 		</Compiler>
 		<Unit filename="PlayGround.cpp" />
 		<Unit filename="PlayGround.h" />
+		<Unit filename="Position.h" />
 		<Unit filename="Snake.cpp" />
 		<Unit filename="Snake.h" />
 		<Unit filename="main.cpp" />

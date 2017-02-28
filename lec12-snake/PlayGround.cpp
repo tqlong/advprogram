@@ -1,4 +1,5 @@
 #include <vector>
+#include <cassert>
 #include "PlayGround.h"
 
 using namespace std;
@@ -15,4 +16,20 @@ PlayGround::PlayGround(int width, int height)
 PlayGround::~PlayGround()
 {
     //dtor
+}
+
+void PlayGround::changeCellState(Position pos, CellType type)
+{
+    assert(pos.isInsideBox(0,0,getWidth(),getHeight()));
+    squares[pos.y][pos.x] = type;
+}
+
+void PlayGround::processUserInput(UserInput input)
+{
+    snake.processUserInput(input);
+}
+
+void PlayGround::nextStep()
+{
+    snake.nextStep();
 }

@@ -2,14 +2,11 @@
 #define GAMEGROUND_H
 
 #include <vector>
-#include "snake.h"
+#include "Snake.h"
+#include "Position.h"
 
 enum CellType {
     CELL_EMPTY = 0, CELL_SNAKE, CELL_CHERRY
-};
-
-enum UserInput {
-    NO_INPUT = 0, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 };
 
 enum GameStatus {
@@ -17,12 +14,6 @@ enum GameStatus {
     GAME_STOP = 2,
     GAME_WON = 4 | GAME_STOP,
     GAME_LOST = 8 | GAME_STOP,
-};
-
-struct Position
-{
-    int x;
-    int y;
 };
 
 class PlayGround
@@ -36,10 +27,14 @@ public:
     ~PlayGround();
 
     bool isGameRunning() const { return status == GAME_RUNNING; }
-    void processUserInput(UserInput input) { }
-    void nextStep() { }
+    void processUserInput(UserInput input);
+    void nextStep();
     void changeCellState(Position pos, CellType type);
-    void addCherry() { }
+    void addCherry() { squares[0][0] = CELL_CHERRY; }
+
+    int getWidth() const { return squares[0].size(); }
+    int getHeight() const { return squares.size(); }
+    const std::vector< std::vector<CellType> >& getSquares() const { return squares; }
 };
 
 #endif // GAMEGROUND_H

@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <chrono>
 #include <SDL2/SDL.h>
 
 #include "painter.h"
@@ -9,12 +10,17 @@
 
 using namespace std;
 
-const int SCREEN_WIDTH = 800;
+const int SCREEN_WIDTH = 900;
 const int SCREEN_HEIGHT = 600;
 const string WINDOW_TITLE = "Snake Game";
 
 const int GROUND_WIDTH = 30;
 const int GROUND_HEIGHT = 20;
+const int CELL_SIZE = 30;
+
+const double STEP_DELAY = 0.5;
+#define CLOCK_NOW chrono::system_clock::now
+typedef chrono::duration<double> ElapsedTime;
 
 void logSDLError(std::ostream& os, const std::string &msg, bool fatal = false);
 void initSDL(SDL_Window* &window, SDL_Renderer* &renderer);
@@ -39,15 +45,22 @@ int main(int argc, char* argv[])
     PlayGround playGround(GROUND_WIDTH, GROUND_HEIGHT);
 
     SDL_Event e;
+    auto start = CLOCK_NOW();
     renderGamePlay(painter, playGround);
     while (playGround.isGameRunning()) {
-        if (SDL_WaitEvent(&e) != 0) {
+        while (SDL_PollEvent(&e)) {
             UserInput input = interpretEvent(e);
             playGround.processUserInput(input);
         }
-        playGround.nextStep();
-        renderGamePlay(painter, playGround);
-        SDL_Delay(100);
+
+        auto end = CLOCK_NOW();
+        ElapsedTime elapsed = end-start;
+        if (elapsed.count() > STEP_DELAY) {
+            playGround.nextStep();
+            renderGamePlay(painter, playGround);
+            start = end;
+        }
+        SDL_Delay(1);
     }
     renderGameOver(painter, playGround);
     updateRankingTable(playGround);
@@ -110,12 +123,47 @@ float generateRandomNumber()
 
 void renderSplashScreen()
 {
-
+    waitUntilKeyPressed();
 }
 
-void renderGamePlay(Painter&, const PlayGround& playGround)
+void renderGamePlay(Painter& painter, const PlayGround& playGround)
 {
+    int top = 0, left = 0;
+    int width = playGround.getWidth();
+    int height = playGround.getHeight();
+    painter.clearWithBgColor(PURPLE_COLOR);
 
+    painter.setColor(WHITE_COLOR);
+    for (int i = 0; i <= width; i++) {
+        painter.setAngle(-90);
+        painter.setPosition(left+i * CELL_SIZE, top+0);
+        painter.moveForward(height * CELL_SIZE);
+    }
+
+    for (int i = 0; i <= height; i++) {
+        painter.setAngle(0);
+        painter.setPosition(left+0, top+i * CELL_SIZE);
+        painter.moveForward(width * CELL_SIZE);
+    }
+
+    const vector<vector<CellType> >& squares = playGround.getSquares();
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (squares[i][j] == CELL_CHERRY) {
+                painter.setColor(ORANGE_COLOR);
+                painter.setAngle(-90);
+                painter.setPosition(left+j*CELL_SIZE+5, top+i*CELL_SIZE+5);
+                painter.createSquare(CELL_SIZE-10);
+            } else if (squares[i][j] == CELL_SNAKE) {
+                painter.setColor(RED_COLOR);
+                painter.setAngle(0);
+                painter.setPosition(left+j*CELL_SIZE+5, top+i*CELL_SIZE+CELL_SIZE/2);
+                painter.createCircle(CELL_SIZE/2-5);
+            }
+        }
+    }
+
+    SDL_RenderPresent(painter.getRenderer());
 }
 
 void renderGameOver(Painter&, const PlayGround& playGround)
@@ -125,6 +173,14 @@ void renderGameOver(Painter&, const PlayGround& playGround)
 
 UserInput interpretEvent(SDL_Event e)
 {
+    if (e.type == SDL_KEYUP) {
+        switch (e.key.keysym.sym) {
+        case SDLK_UP: return KEY_UP;
+        case SDLK_DOWN: return KEY_DOWN;
+        case SDLK_LEFT: return KEY_LEFT;
+        case SDLK_RIGHT: return KEY_RIGHT;
+        }
+    }
     return NO_INPUT;
 }
 
