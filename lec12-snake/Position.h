@@ -19,8 +19,8 @@ struct Position
         return Position(x+dx[d],y+dy[d]);
     }
 
-    bool isInsideBox(int left, int top, int right, int bottom) {
-        return x >= left && x < right && y >= top && y < bottom;
+    bool isInsideBox(int left, int top, int width, int height) {
+        return x >= left && x < left+width && y >= top && y < top+height;
     }
 };
 

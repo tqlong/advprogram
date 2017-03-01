@@ -2,11 +2,14 @@
 #include "PlayGround.h"
 
 Snake::Snake(PlayGround* playGround)
-    : position(playGround->getWidth() / 2, playGround->getHeight() / 2),
+    : head( new SnakeNode (
+              Position(playGround->getWidth() / 2, playGround->getHeight() / 2)
+            ) ),
       playGround(playGround),
-      direction(Direction::RIGHT)
+      direction(Direction::RIGHT),
+      cherry(0)
 {
-    playGround->changeCellState(position, CELL_SNAKE);
+    changePlayGroundState(CELL_SNAKE);
 }
 
 Snake::~Snake()
@@ -41,8 +44,30 @@ void Snake::nextStep()
             break;
         }
     }
-    Position newPosition = position.move(direction);
-    playGround->changeCellState(position, CELL_EMPTY);
-    position = newPosition;
-    playGround->changeCellState(position, CELL_SNAKE);
+
+    Position newPosition = head->position.move(direction);
+    CellType type = playGround->getCellState(newPosition);
+
+    changePlayGroundState(CELL_EMPTY);
+    if (cherry > 0) {
+        cherry--;
+        head = new SnakeNode(newPosition, head);
+    } else {
+        for (SnakeNode* p = head; p != nullptr; p = p->next) {
+            std::swap(p->position, newPosition);
+        }
+    }
+    changePlayGroundState(CELL_SNAKE);
+
+    if (type == CELL_CHERRY) {
+        cherry++;
+        playGround->addCherry();
+    }
+}
+
+void Snake::changePlayGroundState(CellType type)
+{
+    for (SnakeNode* p = head; p != nullptr; p = p->next) {
+        playGround->changeCellState(p->position, type);
+    }
 }

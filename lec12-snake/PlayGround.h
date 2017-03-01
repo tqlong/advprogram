@@ -5,10 +5,6 @@
 #include "Snake.h"
 #include "Position.h"
 
-enum CellType {
-    CELL_EMPTY = 0, CELL_SNAKE, CELL_CHERRY
-};
-
 enum GameStatus {
     GAME_RUNNING = 1,
     GAME_STOP = 2,
@@ -30,11 +26,12 @@ public:
     void processUserInput(UserInput input);
     void nextStep();
     void changeCellState(Position pos, CellType type);
-    void addCherry() { squares[0][0] = CELL_CHERRY; }
+    void addCherry();
 
     int getWidth() const { return squares[0].size(); }
     int getHeight() const { return squares.size(); }
     const std::vector< std::vector<CellType> >& getSquares() const { return squares; }
+    CellType getCellState(Position p) const { return squares[p.y][p.x]; }
 };
 
 #endif // GAMEGROUND_H

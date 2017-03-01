@@ -1,5 +1,6 @@
 #include <vector>
 #include <cassert>
+#include <cstdlib>
 #include "PlayGround.h"
 
 using namespace std;
@@ -33,3 +34,15 @@ void PlayGround::nextStep()
 {
     snake.nextStep();
 }
+
+void PlayGround::addCherry()
+{
+    do {
+        Position p(rand()%getWidth(), rand()%getHeight());
+        if (getCellState(p) == CELL_EMPTY) {
+            changeCellState(p, CELL_CHERRY);
+            break;
+        }
+    } while (true);
+}
+
