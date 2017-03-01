@@ -126,6 +126,40 @@ void renderSplashScreen()
     waitUntilKeyPressed();
 }
 
+void drawCherry(Painter& painter, int left, int top)
+{
+    painter.setColor(ORANGE_COLOR);
+    painter.setAngle(-90);
+    painter.setPosition(left+5, top+5);
+    painter.createSquare(CELL_SIZE-10);
+}
+
+void drawSnake(Painter& painter, int left, int top, vector<Position> positions)
+{
+    painter.setColor(RED_COLOR);
+    painter.setAngle(0);
+    for (Position pos : positions) {
+        painter.setPosition(left+pos.x*CELL_SIZE+5, top+pos.y*CELL_SIZE+CELL_SIZE/2);
+        painter.createCircle(CELL_SIZE/2-5);
+    }
+}
+
+void drawVerticalLine(Painter& painter, int left, int top, int cells)
+{
+    painter.setColor(WHITE_COLOR);
+    painter.setAngle(-90);
+    painter.setPosition(left, top);
+    painter.moveForward(cells * CELL_SIZE);
+}
+
+void drawHorizontalLine(Painter& painter, int left, int top, int cells)
+{
+    painter.setColor(WHITE_COLOR);
+    painter.setAngle(0);
+    painter.setPosition(left, top);
+    painter.moveForward(cells * CELL_SIZE);
+}
+
 void renderGamePlay(Painter& painter, const PlayGround& playGround)
 {
     int top = 0, left = 0;
@@ -133,35 +167,20 @@ void renderGamePlay(Painter& painter, const PlayGround& playGround)
     int height = playGround.getHeight();
     painter.clearWithBgColor(PURPLE_COLOR);
 
-    painter.setColor(WHITE_COLOR);
-    for (int i = 0; i <= width; i++) {
-        painter.setAngle(-90);
-        painter.setPosition(left+i * CELL_SIZE, top+0);
-        painter.moveForward(height * CELL_SIZE);
-    }
+    for (int i = 0; i <= width; i++)
+        drawVerticalLine(painter, left+i*CELL_SIZE, top+0, height);
 
-    for (int i = 0; i <= height; i++) {
-        painter.setAngle(0);
-        painter.setPosition(left+0, top+i * CELL_SIZE);
-        painter.moveForward(width * CELL_SIZE);
-    }
+    for (int i = 0; i <= height; i++)
+        drawHorizontalLine(painter, left+0, top+i * CELL_SIZE, width);
 
     const vector<vector<CellType> >& squares = playGround.getSquares();
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            if (squares[i][j] == CELL_CHERRY) {
-                painter.setColor(ORANGE_COLOR);
-                painter.setAngle(-90);
-                painter.setPosition(left+j*CELL_SIZE+5, top+i*CELL_SIZE+5);
-                painter.createSquare(CELL_SIZE-10);
-            } else if (squares[i][j] == CELL_SNAKE) {
-                painter.setColor(RED_COLOR);
-                painter.setAngle(0);
-                painter.setPosition(left+j*CELL_SIZE+5, top+i*CELL_SIZE+CELL_SIZE/2);
-                painter.createCircle(CELL_SIZE/2-5);
-            }
-        }
-    }
+    for (int i = 0; i < height; i++)
+        for (int j = 0; j < width; j++)
+            if (squares[i][j] == CELL_CHERRY)
+                drawCherry(painter, left+j*CELL_SIZE, top+i*CELL_SIZE);
+
+    vector<Position> snakePositions = playGround.getSnakePositions();
+    drawSnake(painter, left, top, snakePositions);
 
     SDL_RenderPresent(painter.getRenderer());
 }

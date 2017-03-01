@@ -33,6 +33,8 @@ public:
     const std::vector< std::vector<CellType> >& getSquares() const { return squares; }
     CellType getCellState(Position p) const { return squares[p.y][p.x]; }
     void setGameStatus(GameStatus status);
+
+    std::vector<Position> getSnakePositions() const;
 };
 
 #endif // GAMEGROUND_H

@@ -44,6 +44,7 @@ public:
     void processUserInput(UserInput input);
     void nextStep();
     bool checkPosition(Position pos);
+    SnakeNode* getHead() const { return head; }
 private:
     Direction changeDirection(UserInput input);
     void changePlayGroundState(CellType type);

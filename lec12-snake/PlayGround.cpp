@@ -51,3 +51,10 @@ void PlayGround::setGameStatus(GameStatus status)
     this->status = status;
 }
 
+vector<Position> PlayGround::getSnakePositions() const
+{
+    vector<Position> res;
+    for (SnakeNode* p = snake.getHead(); p != nullptr; p = p->next)
+        res.push_back(p->position);
+    return res;
+}
