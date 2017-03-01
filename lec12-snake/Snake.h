@@ -43,6 +43,7 @@ public:
 
     void processUserInput(UserInput input);
     void nextStep();
+    bool checkPosition(Position pos);
 private:
     Direction changeDirection(UserInput input);
     void changePlayGroundState(CellType type);

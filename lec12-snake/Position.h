@@ -22,6 +22,10 @@ struct Position
     bool isInsideBox(int left, int top, int width, int height) {
         return x >= left && x < left+width && y >= top && y < top+height;
     }
+
+    bool operator==(Position p) {
+        return x == p.x && y == p.y;
+    }
 };
 
 #endif // POSITION_H

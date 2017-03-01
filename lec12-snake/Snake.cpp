@@ -46,7 +46,10 @@ void Snake::nextStep()
     }
 
     Position newPosition = head->position.move(direction);
-    if (!playGround->checkPosition(newPosition)) return;
+    if (!checkPosition(newPosition)) {
+        playGround->setGameStatus(GAME_LOST);
+        return;
+    }
 
     CellType type = playGround->getCellState(newPosition);
 
@@ -72,4 +75,15 @@ void Snake::changePlayGroundState(CellType type)
     for (SnakeNode* p = head; p != nullptr; p = p->next) {
         playGround->changeCellState(p->position, type);
     }
+}
+
+bool Snake::checkPosition(Position pos)
+{
+    if ( !pos.isInsideBox(0,0,playGround->getWidth(),playGround->getHeight()) )
+        return false;
+
+    for (SnakeNode* p = head; p->next != nullptr; p = p->next)
+        if (p->position == pos) return false;
+
+    return true;
 }
