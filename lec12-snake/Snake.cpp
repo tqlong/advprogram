@@ -46,6 +46,8 @@ void Snake::nextStep()
     }
 
     Position newPosition = head->position.move(direction);
+    if (!playGround->checkPosition(newPosition)) return;
+
     CellType type = playGround->getCellState(newPosition);
 
     changePlayGroundState(CELL_EMPTY);

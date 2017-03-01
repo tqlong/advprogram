@@ -32,6 +32,7 @@ public:
     int getHeight() const { return squares.size(); }
     const std::vector< std::vector<CellType> >& getSquares() const { return squares; }
     CellType getCellState(Position p) const { return squares[p.y][p.x]; }
+    bool checkPosition(Position pos);
 };
 
 #endif // GAMEGROUND_H

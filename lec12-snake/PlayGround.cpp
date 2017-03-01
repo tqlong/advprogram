@@ -46,3 +46,12 @@ void PlayGround::addCherry()
     } while (true);
 }
 
+bool PlayGround::checkPosition(Position pos)
+{
+    if ( !pos.isInsideBox(0,0,getWidth(),getHeight())
+          || getCellState(pos) == CELL_SNAKE ) {
+        status = GAME_LOST;
+        return false;
+    }
+    return true;
+}
