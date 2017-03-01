@@ -7,6 +7,7 @@
 
 #include "painter.h"
 #include "PlayGround.h"
+#include "Gallery.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ const int GROUND_WIDTH = 30;
 const int GROUND_HEIGHT = 20;
 const int CELL_SIZE = 30;
 
-const double STEP_DELAY = 0.5;
+const double STEP_DELAY = 0.3;
 #define CLOCK_NOW chrono::system_clock::now
 typedef chrono::duration<double> ElapsedTime;
 
@@ -33,6 +34,8 @@ void renderGameOver(Painter&, const PlayGround& playGround);
 UserInput interpretEvent(SDL_Event e);
 void updateRankingTable(const PlayGround& playGround);
 
+Gallery* gallery = nullptr; // global picture manager
+
 int main(int argc, char* argv[])
 {
     srand(time(0));
@@ -40,6 +43,7 @@ int main(int argc, char* argv[])
     SDL_Renderer* renderer;
     initSDL(window, renderer);
     Painter painter(window, renderer);
+    gallery = new Gallery(painter);
 
     renderSplashScreen();
     PlayGround playGround(GROUND_WIDTH, GROUND_HEIGHT);
@@ -65,6 +69,7 @@ int main(int argc, char* argv[])
     renderGameOver(painter, playGround);
     updateRankingTable(playGround);
 
+    delete gallery;
     quitSDL(window, renderer);
     return 0;
 }
@@ -128,19 +133,24 @@ void renderSplashScreen()
 
 void drawCherry(Painter& painter, int left, int top)
 {
-    painter.setColor(ORANGE_COLOR);
-    painter.setAngle(-90);
-    painter.setPosition(left+5, top+5);
-    painter.createSquare(CELL_SIZE-10);
+    SDL_Rect dst = { left+5, top+5, CELL_SIZE-10, CELL_SIZE-10 };
+    painter.createImage(gallery->getImage(PIC_CHERRY), NULL, &dst);
 }
 
-void drawSnake(Painter& painter, int left, int top, vector<Position> positions)
+void drawSnake(Painter& painter, int left, int top, vector<Position> pos)
 {
-    painter.setColor(RED_COLOR);
-    painter.setAngle(0);
-    for (Position pos : positions) {
-        painter.setPosition(left+pos.x*CELL_SIZE+5, top+pos.y*CELL_SIZE+CELL_SIZE/2);
-        painter.createCircle(CELL_SIZE/2-5);
+    for (size_t i = 0; i < pos.size(); i++) {
+        SDL_Rect dst = { left+pos[i].x*CELL_SIZE+1, top+pos[i].y*CELL_SIZE+1, CELL_SIZE-2, CELL_SIZE-2 };
+        SDL_Texture* texture = NULL;
+        if (i > 0) {
+            if (pos[i].y == pos[i-1].y)
+                texture = gallery->getImage(PIC_SNAKE_HORIZONTAL);
+            else
+                texture = gallery->getImage(PIC_SNAKE_VERTICAL);
+        } else { // snake's head
+            texture = gallery->getImage(PIC_SNAKE_HEAD);
+        }
+        painter.createImage(texture, NULL, &dst);
     }
 }
 

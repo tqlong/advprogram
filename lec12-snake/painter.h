@@ -72,5 +72,6 @@ public:
     void createParallelogram(float size);
 
     SDL_Texture* loadTexture( std::string path );
-    bool createImage( SDL_Texture* texture );
+    bool createImage( SDL_Texture* texture,
+        SDL_Rect* srcrect = nullptr, SDL_Rect* dstrect = nullptr );
 };

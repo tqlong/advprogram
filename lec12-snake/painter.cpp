@@ -136,9 +136,10 @@ SDL_Texture* Painter::loadTexture( string path )
     return newTexture;
 }
 
-bool Painter::createImage( SDL_Texture* texture )
+bool Painter::createImage( SDL_Texture* texture,
+        SDL_Rect* srcrect, SDL_Rect* dstrect)
 {
     if( texture == NULL ) return false;
-    SDL_RenderCopy( renderer, texture, NULL, NULL );
+    SDL_RenderCopy( renderer, texture, srcrect, dstrect );
     return true;
 }
