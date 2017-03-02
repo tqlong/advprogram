@@ -48,6 +48,7 @@ int main(int argc, char* argv[])
     renderSplashScreen();
     PlayGround playGround(GROUND_WIDTH, GROUND_HEIGHT);
 
+    cout << "Play Ground initialized" << endl;
     SDL_Event e;
     auto start = CLOCK_NOW();
     renderGamePlay(painter, playGround);
@@ -128,6 +129,7 @@ float generateRandomNumber()
 
 void renderSplashScreen()
 {
+    cout << "Press any key to start game" << endl;
     waitUntilKeyPressed();
 }
 

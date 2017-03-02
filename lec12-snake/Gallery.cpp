@@ -17,5 +17,5 @@ void Gallery::loadGamePictures()
     pictures.push_back(painter.loadTexture("cherry.png"));
     pictures.push_back(painter.loadTexture("snake_vertical.png"));
     pictures.push_back(painter.loadTexture("snake_horizontal.png"));
-    pictures.push_back(painter.loadTexture("snake_head.jpg"));
+    pictures.push_back(painter.loadTexture("snake_head.png"));
 }
