@@ -19,7 +19,7 @@ const int GROUND_WIDTH = 30;
 const int GROUND_HEIGHT = 20;
 const int CELL_SIZE = 30;
 
-const double STEP_DELAY = 0.3;
+const double STEP_DELAY = 0.2;
 #define CLOCK_NOW chrono::system_clock::now
 typedef chrono::duration<double> ElapsedTime;
 
@@ -142,7 +142,7 @@ void drawCherry(Painter& painter, int left, int top)
 void drawSnake(Painter& painter, int left, int top, vector<Position> pos)
 {
     for (size_t i = 0; i < pos.size(); i++) {
-        SDL_Rect dst = { left+pos[i].x*CELL_SIZE+1, top+pos[i].y*CELL_SIZE+1, CELL_SIZE-2, CELL_SIZE-2 };
+        SDL_Rect dst = { left+pos[i].x*CELL_SIZE+5, top+pos[i].y*CELL_SIZE+5, CELL_SIZE-10, CELL_SIZE-10 };
         SDL_Texture* texture = NULL;
         if (i > 0) {
             if (pos[i].y == pos[i-1].y)
