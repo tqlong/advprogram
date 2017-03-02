@@ -35,6 +35,8 @@ public:
     void setGameStatus(GameStatus status);
 
     std::vector<Position> getSnakePositions() const;
+    void addScore(int add) { score += add; }
+    int getScore() const { return score; }
 };
 
 #endif // GAMEGROUND_H

@@ -37,6 +37,7 @@ class Snake
     std::queue<UserInput> inputQueue;
 
     int cherry;
+    int score;
 public:
     Snake(PlayGround* playGround);
     ~Snake();

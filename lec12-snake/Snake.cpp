@@ -14,7 +14,11 @@ Snake::Snake(PlayGround* playGround)
 
 Snake::~Snake()
 {
-    //dtor
+    for (SnakeNode* p = head; p != nullptr; ) {
+        SnakeNode* tmp = p->next;
+        delete p;
+        p = tmp;
+    }
 }
 
 void Snake::processUserInput(UserInput input)
@@ -67,6 +71,7 @@ void Snake::nextStep()
     if (type == CELL_CHERRY) {
         cherry++;
         playGround->addCherry();
+        playGround->addScore(1);
     }
 }
 
