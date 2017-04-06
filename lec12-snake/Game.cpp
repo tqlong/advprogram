@@ -23,17 +23,17 @@ Game::~Game()
 }
 
 void Game::snakeMoveTo(Position pos) {
-	switch(getCellState(pos)) {
+	switch(getCellType(pos)) {
 		case CELL_OFF_BOARD:
 		case CELL_SNAKE: status = GAME_OVER; break;
 		case CELL_CHERRY: score++; snake.eatCherry(); addCherry(); 
-		default: setCellState(pos, CELL_SNAKE);
+		default: setCellType(pos, CELL_SNAKE);
 	}
 }
 
 void Game::snakeLeave(Position position)
 {
-	setCellState(position,CELL_EMPTY);
+	setCellType(position,CELL_EMPTY);
 }
 
 void Game::processUserInput(Direction direction)
@@ -60,12 +60,12 @@ void Game::nextStep()
     snake.move(currentDirection);
 }
 
-void Game::setCellState(Position pos, CellType cellType) 
+void Game::setCellType(Position pos, CellType cellType) 
 {
 	if (pos.isInsideBox(0, 0, width, height)) squares[pos.y][pos.x] = cellType;
 }
 
-CellType Game::getCellState(Position pos) const
+CellType Game::getCellType(Position pos) const
 {
 	return pos.isInsideBox(0, 0, width, height) ? squares[pos.y][pos.x] : CELL_OFF_BOARD;
 }
@@ -74,8 +74,8 @@ void Game::addCherry()
 {
     do {
         Position p(rand() % width, rand() % height);
-        if (getCellState(p) == CELL_EMPTY) {
-        	setCellState(p, CELL_CHERRY);
+        if (getCellType(p) == CELL_EMPTY) {
+        	setCellType(p, CELL_CHERRY);
         	cherryPosition = p;
        		break;
         }

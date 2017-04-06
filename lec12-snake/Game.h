@@ -36,7 +36,7 @@ public:
     void processUserInput(Direction direction);
     void nextStep();
     const std::vector< std::vector<CellType> >& getSquares() const { return squares; }
-    CellType getCellState(Position p) const;
+    CellType getCellType(Position p) const;
     void setGameStatus(GameStatus status);
 
     std::vector<Position> getSnakePositions() const;
@@ -48,7 +48,7 @@ public:
     void snakeLeave(Position position);
 private:
 	void addCherry();  
-	void setCellState(Position pos, CellType cellType);
+	void setCellType(Position pos, CellType cellType);
 };
 
 #endif // GAMEGROUND_H
