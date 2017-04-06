@@ -66,7 +66,6 @@ const string WORD_LIST[] = {
         "town", "train", "tray", "tree", "trousers",
         "umbrella",
         "wall", "watch", "wheel", "whip", "whistle", "window", "wire", "wing", "worm"};
-
 const int WORD_COUNT = sizeof(WORD_LIST) / sizeof(string);
 
 string chooseWord() 
@@ -75,68 +74,8 @@ string chooseWord()
     return WORD_LIST[randomIndex];
 }
 
-const string FIGURE[] = {
-        "   -------------    \n"
-        "   |                \n"
-        "   |                \n"
-        "   |                \n"
-        "   |                \n"
-        "   |     \n"
-        " -----   \n",
-        "   -------------    \n"
-        "   |           |    \n"
-        "   |                \n"
-        "   |                \n"
-        "   |                \n"
-        "   |     \n"
-        " -----   \n",
-        "   -------------    \n"
-        "   |           |    \n"
-        "   |           O    \n"
-        "   |                \n"
-        "   |                \n"
-        "   |     \n"
-        " -----   \n",
-        "   -------------    \n"
-        "   |           |    \n"
-        "   |           O    \n"
-        "   |           |    \n"
-        "   |                \n"
-        "   |     \n"
-        " -----   \n",
-        "   -------------    \n"
-        "   |           |    \n"
-        "   |           O    \n"
-        "   |          /|    \n"
-        "   |                \n"
-        "   |     \n"
-        " -----   \n",
-        "   -------------    \n"
-        "   |           |    \n"
-        "   |           O    \n"
-        "   |          /|\\  \n"
-        "   |                \n"
-        "   |     \n"
-        " -----   \n",
-        "   -------------    \n"
-        "   |           |    \n"
-        "   |           O    \n"
-        "   |          /|\\  \n"
-        "   |          /     \n"
-        "   |     \n"
-        " -----   \n",
-        "   -------------    \n"
-        "   |           |    \n"
-        "   |           O    \n"
-        "   |          /|\\  \n"
-        "   |          / \\  \n"
-        "   |     \n"
-        " -----   \n"
-    };
-    
 void renderGame(string guessedWord, int badGuessCount)
 {
-	cout << FIGURE[badGuessCount] << endl;
 	cout << guessedWord << endl;
 	cout << "Number of wrong guesses: " << badGuessCount << endl;
 }
@@ -156,7 +95,7 @@ bool contains(string word, char c)
 
 string update(string guessedWord, string word, char guess)
 {
-	for (int i = word.length(); i >= 0; i--) {
+	for (int i = word.length() - 1; i >= 0; i--) {
         if (word[i] == guess) {
             guessedWord[i] = guess;
         }

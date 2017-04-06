@@ -1,8 +1,6 @@
-#pragma once
+#include <iostream>
 
-#include <string>
+using namespace std;
 
-std::string getDrawing(int incorrectGuess);
-std::string getNextHangman();
-std::string getNextStandingman();
-void clearScreen();
+void renderGame(const string& guessedWord, const string& badGuesses);
+void displayFinalResult(bool won, const string& word);
