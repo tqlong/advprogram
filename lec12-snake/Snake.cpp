@@ -1,94 +1,72 @@
 #include "Snake.h"
-#include "PlayGround.h"
+#include "Game.h"
+#include <iostream>
 
-Snake::Snake(PlayGround* playGround)
-    : head( new SnakeNode (
-              Position(playGround->getWidth() / 2, playGround->getHeight() / 2)
-            ) ),
-      playGround(playGround),
-      direction(Direction::RIGHT),
-      cherry(0)
+Snake::Snake(Game& _game, Position start)
+    : head(new SnakeNode(start)), tail(head), game(_game), cherry(0)
 {
-    changePlayGroundState(CELL_SNAKE);
+	cerr << "Snake " << start.x << "," << start.y << endl;
+    game.snakeMoveTo(start);    
 }
 
 Snake::~Snake()
 {
-    for (SnakeNode* p = head; p != nullptr; ) {
-        SnakeNode* tmp = p->next;
+    for (SnakeNode* p = tail; p != nullptr; ) {
+        SnakeNode* nextNode = p->next;
         delete p;
-        p = tmp;
+        p = nextNode;
     }
 }
 
-void Snake::processUserInput(UserInput input)
+vector<Position> Snake::getPositions() const
 {
-    inputQueue.push(input);
+    vector<Position> res;
+    for (SnakeNode* p = tail; p != nullptr; p = p->next)
+        res.push_back(p->position);
+    return res;
 }
 
-Direction Snake::changeDirection(UserInput input)
+void Snake::growAtFront(Position newPosition)
 {
-    switch (input) {
-    case KEY_UP:    return direction != DOWN ? UP : direction;
-    case KEY_DOWN:  return direction != UP ? DOWN : direction;
-    case KEY_LEFT:  return direction != RIGHT ? LEFT : direction;
-    case KEY_RIGHT: return direction != LEFT ? RIGHT : direction;
-    default:        return direction;
-    }
+	head->next = new SnakeNode(newPosition);
+	head = head->next;
 }
 
-void Snake::nextStep()
+void Snake::slideTo(Position newPosition)
 {
-    while (!inputQueue.empty()) {
-        UserInput input = inputQueue.front();
-        inputQueue.pop();
-        Direction newDirection = changeDirection(input);
-        if (newDirection != direction) {
-            direction = newDirection;
-            break;
-        }
-    }
+	if (tail->next == nullptr) { // snake has only one node
+		tail->position = newPosition;
+	}
+	else {
+		SnakeNode *oldTailNode = tail;
+		
+		//cut the old tail off the snake
+		tail = tail->next;
+		oldTailNode->next = nullptr;
+		
+		// move it to the head of the snake
+		oldTailNode->position = newPosition;
+		head->next = oldTailNode;
+		head = oldTailNode;
+	}
+}
 
+void Snake::eatCherry()
+{
+	cherry++;
+}
+
+void Snake::move(Direction direction)
+{
     Position newPosition = head->position.move(direction);
-    if (!checkPosition(newPosition)) {
-        playGround->setGameStatus(GAME_LOST);
-        return;
-    }
+    CellType cellType = game.snakeMoveTo(newPosition);
+    if (game.isGameOver()) return;
 
-    CellType type = playGround->getCellState(newPosition);
-
-    changePlayGroundState(CELL_EMPTY);
     if (cherry > 0) {
         cherry--;
-        head = new SnakeNode(newPosition, head);
+        growAtFront(newPosition);
     } else {
-        for (SnakeNode* p = head; p != nullptr; p = p->next) {
-            std::swap(p->position, newPosition);
-        }
+    	game.snakeLeave(tail->position);
+        slideTo(newPosition);        
     }
-    changePlayGroundState(CELL_SNAKE);
-
-    if (type == CELL_CHERRY) {
-        cherry++;
-        playGround->addCherry();
-        playGround->addScore(1);
-    }
-}
-
-void Snake::changePlayGroundState(CellType type)
-{
-    for (SnakeNode* p = head; p != nullptr; p = p->next) {
-        playGround->changeCellState(p->position, type);
-    }
-}
-
-bool Snake::checkPosition(Position pos)
-{
-    if ( !pos.isInsideBox(0,0,playGround->getWidth(),playGround->getHeight()) )
-        return false;
-
-    for (SnakeNode* p = head; p->next != nullptr; p = p->next)
-        if (p->position == pos) return false;
-
-    return true;
 }

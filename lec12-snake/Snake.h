@@ -2,53 +2,37 @@
 #define SNAKE_H
 
 #include <queue>
-
+#include <vector>
 #include "Position.h"
 
-class PlayGround;
+using namespace std;
 
-enum UserInput {
-    NO_INPUT = 0, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
-};
-
-enum CellType {
-    CELL_EMPTY = 0, CELL_SNAKE, CELL_CHERRY
-};
+class Game;
 
 struct SnakeNode
 {
     Position position;
-    SnakeNode* next;
-
-    SnakeNode(Position p, SnakeNode* n = nullptr) : position(p), next(n) {}
-
-    static SnakeNode* insertHead(SnakeNode* head, Position p)
-    {
-        SnakeNode* newHead = new SnakeNode(p, head);
-        return newHead;
-    }
+    SnakeNode *next;
+    SnakeNode(Position p, SnakeNode* _next = nullptr) : position(p), next(_next) {}
 };
 
 class Snake
 {
-    SnakeNode* head;
-    PlayGround* playGround;
-    Direction direction;
-    std::queue<UserInput> inputQueue;
-
+    SnakeNode *head, *tail;
+    Game& game;    
     int cherry;
     int score;
 public:
-    Snake(PlayGround* playGround);
+    Snake(Game& _game, Position start);
     ~Snake();
 
-    void processUserInput(UserInput input);
-    void nextStep();
+    void move(Direction direction);
     bool checkPosition(Position pos);
-    SnakeNode* getHead() const { return head; }
+    vector<Position> getPositions() const;
+    void eatCherry();
 private:
-    Direction changeDirection(UserInput input);
-    void changePlayGroundState(CellType type);
+    void slideTo(Position newPosition);
+    void growAtFront(Position newPosition);
 };
 
 #endif // SNAKE_H
