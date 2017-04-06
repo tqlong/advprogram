@@ -36,14 +36,15 @@ public:
     void processUserInput(Direction direction);
     void nextStep();
     const std::vector< std::vector<CellType> >& getSquares() const { return squares; }
-    CellType getCellState(Position p) const { return squares[p.y][p.x]; }
+    CellType getCellState(Position p) const;
     void setGameStatus(GameStatus status);
 
     std::vector<Position> getSnakePositions() const;
     Position getCherryPosition() const { return cherryPosition; }
     int getScore() const { return score; }
     bool canChange(Direction current, Direction next) const;    
-    CellType snakeMoveTo(Position position);
+    
+    void snakeMoveTo(Position position);
     void snakeLeave(Position position);
 private:
 	void addCherry();  

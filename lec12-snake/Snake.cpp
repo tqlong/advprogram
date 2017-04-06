@@ -5,7 +5,6 @@
 Snake::Snake(Game& _game, Position start)
     : head(new SnakeNode(start)), tail(head), game(_game), cherry(0)
 {
-	cerr << "Snake " << start.x << "," << start.y << endl;
     game.snakeMoveTo(start);    
 }
 
@@ -59,7 +58,7 @@ void Snake::eatCherry()
 void Snake::move(Direction direction)
 {
     Position newPosition = head->position.move(direction);
-    CellType cellType = game.snakeMoveTo(newPosition);
+    game.snakeMoveTo(newPosition);
     if (game.isGameOver()) return;
 
     if (cherry > 0) {

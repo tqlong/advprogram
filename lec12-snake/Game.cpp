@@ -22,18 +22,13 @@ Game::~Game()
     //dtor
 }
 
-CellType Game::snakeMoveTo(Position pos) {
-	if (!pos.isInsideBox(0, 0, width, height)) {
-		status = GAME_OVER;
-		return CELL_OFF_BOARD;	
-	}
-	CellType oldType = getCellState(pos);
-	setCellState(pos,CELL_SNAKE);
-	switch(oldType) {
-		case CELL_CHERRY: score++; snake.eatCherry(); addCherry(); break;
+void Game::snakeMoveTo(Position pos) {
+	switch(getCellState(pos)) {
+		case CELL_OFF_BOARD:
 		case CELL_SNAKE: status = GAME_OVER; break;
+		case CELL_CHERRY: score++; snake.eatCherry(); addCherry(); 
+		default: setCellState(pos, CELL_SNAKE);
 	}
-	return oldType;
 }
 
 void Game::snakeLeave(Position position)
@@ -67,7 +62,12 @@ void Game::nextStep()
 
 void Game::setCellState(Position pos, CellType cellType) 
 {
-	squares[pos.y][pos.x] = cellType;
+	if (pos.isInsideBox(0, 0, width, height)) squares[pos.y][pos.x] = cellType;
+}
+
+CellType Game::getCellState(Position pos) const
+{
+	return pos.isInsideBox(0, 0, width, height) ? squares[pos.y][pos.x] : CELL_OFF_BOARD;
 }
 
 void Game::addCherry()

@@ -18,8 +18,8 @@ const int BOARD_WIDTH = 30;
 const int BOARD_HEIGHT = 20;
 const int CELL_SIZE = 30;
 
-const SDL_Color BOARD_COLOR = {128, 0, 128};
-const SDL_Color LINE_COLOR = {255, 255, 255};
+const SDL_Color BOARD_COLOR = {0, 0, 0};
+const SDL_Color LINE_COLOR = {128, 128, 128};
 
 const double STEP_DELAY = 0.2;
 #define CLOCK_NOW chrono::system_clock::now
@@ -40,13 +40,11 @@ int main(int argc, char* argv[])
     SDL_Renderer* renderer;
     initSDL(window, renderer, SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
     gallery = new Gallery(renderer);
-    renderSplashScreen();
     Game game(BOARD_WIDTH, BOARD_HEIGHT);
-
-    cout << "Play Ground initialized" << endl;
     SDL_Event e;
-    auto start = CLOCK_NOW();
     
+    renderSplashScreen();
+    auto start = CLOCK_NOW();        
     renderGamePlay(renderer, game);
     while (game.isGameRunning()) {
         while (SDL_PollEvent(&e)) {
