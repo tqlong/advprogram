@@ -1,6 +1,6 @@
 #include "Gallery.h"
 #include "SDL_utils.h"
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 
 Gallery::Gallery(SDL_Renderer* renderer_)
     : renderer(renderer_)

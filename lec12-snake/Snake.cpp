@@ -5,7 +5,7 @@
 Snake::Snake(Game& _game, Position start)
     : head(new SnakeNode(start)), tail(head), game(_game), cherry(0)
 {
-    game.snakeMoveTo(start);    
+    game.snakeMoveTo(start);
 }
 
 Snake::~Snake()
@@ -38,11 +38,11 @@ void Snake::slideTo(Position newPosition)
 	}
 	else {
 		SnakeNode *oldTailNode = tail;
-		
+
 		//cut the old tail off the snake
 		tail = tail->next;
 		oldTailNode->next = nullptr;
-		
+
 		// move it to the head of the snake
 		oldTailNode->position = newPosition;
 		head->next = oldTailNode;
@@ -58,14 +58,16 @@ void Snake::eatCherry()
 void Snake::move(Direction direction)
 {
     Position newPosition = head->position.move(direction);
-    game.snakeMoveTo(newPosition);
-    if (game.isGameOver()) return;
 
     if (cherry > 0) {
         cherry--;
+        game.snakeMoveTo(newPosition);
+        if (game.isGameOver()) return;
         growAtFront(newPosition);
     } else {
     	game.snakeLeave(tail->position);
-        slideTo(newPosition);        
+        game.snakeMoveTo(newPosition);
+        if (game.isGameOver()) return;
+        slideTo(newPosition);
     }
 }

@@ -2,9 +2,9 @@
 #define SDL_UTILS__H
 
 #include <iostream>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
-void logSDLError(std::ostream& os, 
+void logSDLError(std::ostream& os,
                  const std::string &msg, bool fatal = false);
 
 void initSDL(SDL_Window* &window, SDL_Renderer* &renderer,

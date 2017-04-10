@@ -17,6 +17,11 @@ enum CellType {
 
 class Game
 {
+public:
+	const int width;
+	const int height;
+
+private:
     std::vector< std::vector<CellType> > squares;
     Snake snake;
     GameStatus status;
@@ -24,10 +29,8 @@ class Game
     std::queue<Direction> inputQueue;
     Direction currentDirection;
     Position cherryPosition;
+
 public:
-	const int width;
-	const int height;
-	
     Game(int _width, int _height);
     ~Game();
 
@@ -42,12 +45,12 @@ public:
     std::vector<Position> getSnakePositions() const;
     Position getCherryPosition() const { return cherryPosition; }
     int getScore() const { return score; }
-    bool canChange(Direction current, Direction next) const;    
-    
+    bool canChange(Direction current, Direction next) const;
+
     void snakeMoveTo(Position position);
     void snakeLeave(Position position);
 private:
-	void addCherry();  
+	void addCherry();
 	void setCellType(Position pos, CellType cellType);
 };
 
