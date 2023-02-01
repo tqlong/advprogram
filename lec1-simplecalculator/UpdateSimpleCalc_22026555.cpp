@@ -26,6 +26,10 @@ int main(int argc, char* argv[])
 		cout << sothuc(op, num) << endl;
 		return 0;
 	}
+	else {
+			cout << "Invalid" << endl;
+			return 0;
+		}
 }
 
 int arithmetic(int num1, int num2, char op)
