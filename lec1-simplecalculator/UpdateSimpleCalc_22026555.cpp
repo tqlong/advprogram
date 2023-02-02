@@ -7,6 +7,12 @@ int main(int argc, char* argv[])
 {
     if (argc == 4)
     {
+	string n = argv[2];
+    int k = n.length();
+    if (k != 1)
+    {
+    	cout << "Invalid operator" << endl; return 0;
+	}
 	int num1, num2;	char op;
 	num1 = atoi(argv[1]);	
     op = argv[2][0];
@@ -16,6 +22,26 @@ int main(int argc, char* argv[])
 	}
 	else if (argc == 3)
 	{
+		string n = argv[1];
+		int k = n.length();
+		if (k == 3)
+		{
+			if (n[0] != 'c' || n[1] != 'o' || n[2] != 's')
+			{
+				cout << "Invalid operator"; return 0;
+			}
+		}
+		else if (k == 4)
+		{
+			if (n[0] != 's' || n[1] != 'q' || n[2] != 'r' || n[3] != 't')
+			{
+				cout << "Invalid operator"; return 0;
+			}
+		}
+		else if (k > 4 || k < 3)
+		{
+			cout << "Invalid operator"; return 0;
+		}
 		double num;
 		char op;
 		num = atoi(argv[2]);
