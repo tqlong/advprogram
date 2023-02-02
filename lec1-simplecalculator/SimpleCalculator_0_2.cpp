@@ -18,13 +18,13 @@ int main(int argc, char* argv[])
         num1 = atof(argv[2]);
         if (s == "cos")
             cout << cos(num1);
+        if (s == "sqrt")
+            cout << sqrt(num1);
         if (s == "sin")
             cout << sin(num1);
         if (s == "tan")
-            cout << tan(sum1);
-        if (s == "sqrt")
-            cout << sqrt(num1);
-        if (s != "cos" && s != "sqrt")
+            cout << tan(num1);
+        if (s != "cos" && s != "sqrt" && s != "sin" && s != "tan")
             cout << "tham so khong hop le!";
         exit(1);
     }
