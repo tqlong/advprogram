@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int arithmetic(int num1, int num2, char op);
-double sothuc(char op, double num);
+int arithmetic(double num1, double num2, char op);
+double sothuc(string op, double num);
 int main(int argc, char* argv[])
 {
     if (argc == 4)
@@ -14,9 +14,25 @@ int main(int argc, char* argv[])
     	cout << "Invalid operator" << endl; return 0;
 	}
 	int num1, num2;	char op;
-	num1 = atoi(argv[1]);	
+	string tmp = argv[1];
+	string tmpp = argv[3];
+	for (int i = 0; i < tmp.length(); i++)
+	{
+		if (tmp[i] < '0' || tmp[i] > '9')
+		{
+			cout << "Invalid number"; exit(1);
+		}
+	}
+	for (int i = 0; i < tmpp.length(); i++)
+	{
+		if (tmpp[i] < '0' || tmpp[i] > '9')
+		{
+			cout << "Invalid number"; exit(1);
+		}
+	}
+	num1 = atof(argv[1]);	
     op = argv[2][0];
-    num2 = atoi(argv[3]);
+    num2 = atof(argv[3]);
 	cout << arithmetic(num1, num2, op) << endl;
 	return 0;
 	}
@@ -24,38 +40,37 @@ int main(int argc, char* argv[])
 	{
 		string n = argv[1];
 		int k = n.length();
-		if (k == 3)
+		if (k == 3){
+            if ((n != "cos") && (n != "sin") && (n != "tan" && n != "cot")){
+                cout<< "Invalid operator";
+                exit(1);
+            }
+        }
+        if (k == 4){
+            if (n != "sqrt"){
+                cout<< "Invalid operator";
+                exit(1);
+            }
+        }
+        string tmp = argv[2];
+        for (int i = 0; i < tmp.length(); i++)
+	{
+		if (tmp[i] < '0' || tmp[i] > '9')
 		{
-			if (n[0] != 'c' || n[1] != 'o' || n[2] != 's')
-			{
-				cout << "Invalid operator"; return 0;
-			}
+			cout << "Invalid number"; exit(1);
 		}
-		else if (k == 4)
-		{
-			if (n[0] != 's' || n[1] != 'q' || n[2] != 'r' || n[3] != 't')
-			{
-				cout << "Invalid operator"; return 0;
-			}
-		}
-		else if (k > 4 || k < 3)
-		{
-			cout << "Invalid operator"; return 0;
-		}
-		double num;
-		char op;
-		num = atoi(argv[2]);
-		op = argv[1][0];
-		cout << sothuc(op, num) << endl;
-		return 0;
 	}
-	else {
-			cout << "Invalid" << endl;
-			return 0;
-		}
+        double num;
+        num = atof(argv[2]);
+        cout<< sothuc(n, num);
+    }
+    else {
+        cout<< "Invalid operator";
+        exit(1);
+    }
 }
 
-int arithmetic(int num1, int num2, char op)
+int arithmetic(double num1, double num2, char op)
 {
     switch (op)
     {
@@ -63,7 +78,7 @@ int arithmetic(int num1, int num2, char op)
         return num1 + num2;
     case '-':
         return num1 - num2;
-    case 'x':
+    case '*':
         return num1 * num2;
     case '/':
         if (num2 == 0)
@@ -74,34 +89,52 @@ int arithmetic(int num1, int num2, char op)
         else
             return num1 / num2;
     case '%':
-        if (num2 == 0)
+        if (num2 == 0 || num2 != (int)num2 || num1 != (int)num1) 
         {
             cout << "Invalid divisor" << endl;
             exit(1);
         }
         else
-            return num1 % num2;
+            return int(num1) % int(num2);
     default:
         cout << "Invalid operator" << endl;
         exit(1);
     }
 }
-double sothuc(char op, double num)
+double sothuc(string op, double num)
 {
-	switch (op)
+	if (op == "sin")
 	{
-		case 'c':
-			return cos(num);
-		case 's':
-			if (num < 0)
-			{
-				cout << "Invalid number" << endl;
-				exit(1);
-			}
-			else
-				return sqrt(num);
-		default:
-			cout << "Invalid operator" << endl;
-        	exit(1);
+		return sin(num);	
 	}
+	else if (op == "cos")
+	{
+		return cos(num);
+	}
+	else if (op == "tan")
+	{
+		if (cos(num) == 0)
+		{
+			cout << "Invalid Number"; exit(1);
+		}
+		else return tan(num);	
+	}
+	else if (op == "cot")
+	{
+		if (sin(num) == 0)
+		{
+			cout << "Invalid Number"; exit(1);
+		}
+		else return (1/tan(num));
+	}
+	else if (op == "sqrt")
+	{
+		if (num < 0)
+		{
+			cout << "Invalid Number"; exit(1);
+		}
+		else return sqrt(num);
+	}
+	else {cout << "Invalid operator" << endl;
+        	exit(1);}
 }
