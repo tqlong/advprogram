@@ -45,6 +45,15 @@ double luonggiac(double num, string n)
     else if (n == "cot"){
         return (1/tan(num));
     }
+    else if (n == "sqrt"){
+        if (num > 0){
+            return sqrt(num);
+        }
+        else{
+            cout<< "Invalid";
+            exit(1);
+        }
+    }
 }
 
 int main(int argc, char* argv[])
