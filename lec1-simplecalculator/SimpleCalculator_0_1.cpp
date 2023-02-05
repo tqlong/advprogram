@@ -1,12 +1,12 @@
 #include <iostream>
-
+#include <math.h>
 using namespace std;
 
 int main()
 {
     int num1, num2;
     char op;
-
+    cout << 1.7*pow(10,308) + 100000000 << endl;
     cin >> num1 >> op >> num2;
     switch (op)
     {
