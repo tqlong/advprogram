@@ -11,9 +11,14 @@ void guessIt();
 
 int main( int argc, char * argv[] ){
     char isContinued;
+    std::cout << "Welcome to Guess It Game!\n";
+    std::cout << "You have to guess a number between 1 and 100.\n";
+    std::cout << "If your guess is higher than the number, you will be told to guess lower.\n";
+    std::cout << "If your guess is lower than the number, you will be told to guess higher.\n";
+    std::cout << "You can enter 'quit' to exit the game.\n";
     do {
         guessIt();
-        std::cout << std::endl << "Do you want to play again (y/n) ?  ";
+        std::cout << '\n' << "Do you want to play again (y/n) ?  ";
         std::cin >> isContinued;
     } while (isContinued == 'y' || isContinued == 'Y');
     return 0;
@@ -25,11 +30,14 @@ int getRandNum(){
 }
 
 int getGuess(){
-    std::cout << "Enter your guess between 1 and 100: ";
+    std::cout << "Enter your guess: ";
     std::string s;
     std::cin >> s;
+    if (s == "quit" || s == "Quit" || s == "QUIT"){
+        exit(0);
+    }
     for (int i = 0; i < s.length(); i++){
-        if (!(s[i] > '0' && s[i] < '9')){
+        if (!(s[i] >= '0' && s[i] <= '9')){
             std::cout << "Invalid input. Please enter a number." << std::endl;
             return getGuess();
         }
