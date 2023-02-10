@@ -29,7 +29,7 @@ int getGuess(){
     std::string s;
     std::cin >> s;
     for (int i = 0; i < s.length(); i++){
-        if (!(s[i] > 47 && s[i] < 58)){
+        if (!(s[i] > '0' && s[i] < '9')){
             std::cout << "Invalid input. Please enter a number." << std::endl;
             return getGuess();
         }
