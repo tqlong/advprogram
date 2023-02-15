@@ -1,5 +1,5 @@
 // GameOver3.cpp
-#include <iostream>
+#include <bits/stdc++.h>
 using std::cout;
 using std::endl;
 
